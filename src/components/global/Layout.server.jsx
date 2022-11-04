@@ -4,6 +4,8 @@ import {useLocalization, useShopQuery, CacheLong, gql} from '@shopify/hydrogen';
 import {Header} from '~/components';
 import {Footer} from '~/components/index.server';
 import {parseMenu} from '~/lib/utils';
+import Navbar from '../custom/Navbar';
+import CustomFotter from '../custom/Footer';
 
 const HEADER_MENU_HANDLE = 'main-menu';
 const FOOTER_MENU_HANDLE = 'footer';
@@ -23,14 +25,16 @@ export function Layout({children}) {
           </a>
         </div>
         <Suspense fallback={<Header title={SHOP_NAME_FALLBACK} />}>
-          <HeaderWithMenu />
+          <Navbar/>
+          {/* <HeaderWithMenu /> */}
         </Suspense>
         <main role="main" id="mainContent" className="flex-grow">
           {children}
         </main>
       </div>
       <Suspense fallback={<Footer />}>
-        <FooterWithMenu />
+        <CustomFotter/>
+        {/* <FooterWithMenu /> */}
       </Suspense>
     </>
   );

@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import { Suspense } from 'react';
 import {
   CacheLong,
   gql,
@@ -8,11 +8,14 @@ import {
   useLocalization,
   useShopQuery,
 } from '@shopify/hydrogen';
+import { Text } from '~/components';
 
-import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {getHeroPlaceholder} from '~/lib/placeholders';
-import {FeaturedCollections, Hero} from '~/components';
-import {Layout, ProductSwimlane} from '~/components/index.server';
+import { MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
+import { getHeroPlaceholder } from '~/lib/placeholders';
+import { FeaturedCollections, Hero } from '~/components';
+import { Layout, ProductSwimlane } from '~/components/index.server';
+import Home from '../components/custom/Home';
+import Image2 from '../components/custom/Image';
 
 export default function Homepage() {
   useServerAnalytics({
@@ -21,7 +24,6 @@ export default function Homepage() {
       pageType: ShopifyAnalyticsConstants.pageType.home,
     },
   });
-
   return (
     <Layout>
       <Suspense>
@@ -33,14 +35,14 @@ export default function Homepage() {
     </Layout>
   );
 }
-
+let collection_name;
 function HomepageContent() {
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {data} = useShopQuery({
+  const { data } = useShopQuery({
     query: HOMEPAGE_CONTENT_QUERY,
     variables: {
       language: languageCode,
@@ -49,29 +51,98 @@ function HomepageContent() {
     preload: true,
   });
 
-  const {heroBanners, featuredCollections, featuredProducts} = data;
+  const collection_handle = useShopQuery({
+    query: COLLECTION_NAME,
+    cache: CacheLong(),
+    preload: true,
+  });
+  collection_name = collection_handle.data.shop.metafield.value
+  console.log(collection_name, "COLLECTION_NAME")
+  // console.log(test, "res")
+  const test = useShopQuery({
+    query: Testquery,
+    variables: {
+      collection_name
+    },
+    cache: CacheLong(),
+    preload: true,
+  });
+  let res = test.data.collectionByHandle.products.edges
+  const { heroBanners, featuredCollections, featuredProducts } = data;
 
   // fill in the hero banners with placeholders if they're missing
   const [primaryHero, secondaryHero, tertiaryHero] = getHeroPlaceholder(
     heroBanners.nodes,
   );
 
+  // console.log(featuredProducts.nodes[0].variants.nodes,'feature')
+
   return (
+    // <>
+
+    // <Home/>
+    // </>
     <>
-      {primaryHero && (
-        <Hero {...primaryHero} height="full" top loading="eager" />
-      )}
+      {/* {primaryHero && (
+        // <Hero {...primaryHero} height="full" top loading="eager" />
+      )} */}
+
+      {/**/}
+      {/* <>{res[0].node.title}</> */}
+      {/* {
+        res.map((x)=>{
+          return  <Text>{x.node.title}</Text>
+        })
+      } */}
+      <Image2 data={res} title={collection_name} />
+
+
+      {/* 
+      {res.forEach((x) => {
+        <p>{x.node.title}</p>
+      })} */}
       <ProductSwimlane
         data={featuredProducts.nodes}
-        title="Featured Products"
+        title="Headless"
         divider="bottom"
       />
-      {secondaryHero && <Hero {...secondaryHero} />}
-      <FeaturedCollections
+      <ProductSwimlane
+        data={featuredProducts.nodes}
+        title="Featured"
+        divider="bottom"
+      />
+      <ProductSwimlane
+        data={featuredProducts.nodes}
+        title="Maxi Dresses"
+        divider="bottom"
+      />
+      <ProductSwimlane
+        data={featuredProducts.nodes}
+        title="Cotton Dresses"
+        divider="bottom"
+      />
+      <ProductSwimlane
+        data={featuredProducts.nodes}
+        title="Loungewear"
+        divider="bottom"
+      />
+      <ProductSwimlane
+        data={featuredProducts.nodes}
+        title="Winterwear"
+        divider="bottom"
+      />
+      <ProductSwimlane
+        data={featuredProducts.nodes}
+        title="Print Sizes"
+        divider="bottom"
+      />
+      {/* {secondaryHero && <Hero {...secondaryHero} />} */}
+      {/* <FeaturedCollections
         data={featuredCollections.nodes}
         title="Collections"
-      />
-      {tertiaryHero && <Hero {...tertiaryHero} />}
+      /> */}
+
+      {/* {tertiaryHero && <Hero {...tertiaryHero} />} */}
     </>
   );
 }
@@ -79,7 +150,7 @@ function HomepageContent() {
 function SeoForHomepage() {
   const {
     data: {
-      shop: {name, description},
+      shop: { name, description },
     },
   } = useShopQuery({
     query: HOMEPAGE_SEO_QUERY,
@@ -182,3 +253,59 @@ const HOMEPAGE_SEO_QUERY = gql`
     }
   }
 `;
+
+const COLLECTION_NAME = gql`
+query shopInfo{
+  shop {
+    metafield(key: "featured-collection-1", namespace: "hydrogen") {
+      namespace
+      key
+      id
+      value
+    }
+  }
+}
+`
+
+
+const Testquery = gql`
+query shopInfo{
+    collectionByHandle(handle:  "random-picks") {
+      products(first: 10) {
+      edges {
+        node {
+          title
+          id
+          handle
+          publishedAt
+          variants(first: 10) {
+            nodes {
+              id
+              priceV2 {
+                amount
+                currencyCode
+              }
+              compareAtPriceV2 {
+                amount
+                currencyCode
+              }
+              image {
+                altText
+                height
+                url
+                width
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  }
+
+`
+
+
+
+// console.log(Testquery, "test")

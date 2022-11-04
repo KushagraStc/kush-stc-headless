@@ -1,7 +1,7 @@
-import {Suspense, useMemo} from 'react';
-import {gql, useShopQuery, useLocalization} from '@shopify/hydrogen';
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
-import {ProductCard, Section} from '~/components';
+import { Suspense, useMemo } from 'react';
+import { gql, useShopQuery, useLocalization } from '@shopify/hydrogen';
+import { PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
+import { ProductCard, Section } from '~/components';
 
 const mockProducts = new Array(12).fill('');
 
@@ -40,10 +40,11 @@ export function ProductSwimlane({
   );
 }
 
-function ProductCards({products}) {
+function ProductCards({ products }) {
   return (
     <>
       {products.map((product) => (
+        // console.log(product,"######")
         <ProductCard
           product={product}
           key={product.id}
@@ -54,13 +55,13 @@ function ProductCards({products}) {
   );
 }
 
-function RecommendedProducts({productId, count}) {
+function RecommendedProducts({ productId, count }) {
   const {
-    language: {isoCode: languageCode},
-    country: {isoCode: countryCode},
+    language: { isoCode: languageCode },
+    country: { isoCode: countryCode },
   } = useLocalization();
 
-  const {data: products} = useShopQuery({
+  const { data: products } = useShopQuery({
     query: RECOMMENDED_PRODUCTS_QUERY,
     variables: {
       count,
@@ -86,9 +87,9 @@ function RecommendedProducts({productId, count}) {
   return <ProductCards products={mergedProducts} />;
 }
 
-function TopProducts({count}) {
+function TopProducts({ count }) {
   const {
-    data: {products},
+    data: { products },
   } = useShopQuery({
     query: TOP_PRODUCTS_QUERY,
     variables: {

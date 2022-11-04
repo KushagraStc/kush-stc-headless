@@ -4,11 +4,11 @@ export default defineConfig({
   shopify: {
     defaultCountryCode: 'IN',
     defaultLanguageCode: 'EN',
-    storeDomain: Oxygen.env.PUBLIC_STORE_DOMAIN,
-    storefrontToken: Oxygen.env.PUBLIC_STOREFRONT_API_TOKEN,
-    privateStorefrontToken: Oxygen.env.PRIVATE_STOREFRONT_API_TOKEN,
+    storeDomain: "stc-test-headless.myshopify.com",
+    storefrontToken: Oxygen.env.PUBLIC_STOREFRONT_API_TOKEN|| "e29fdde0b1089b5874663d656fc91dff",
+    privateStorefrontToken: Oxygen?.env?.PRIVATE_STOREFRONT_API_TOKEN,
     storefrontApiVersion: '2022-07',
-    storefrontId: Oxygen.env.PUBLIC_STOREFRONT_ID,
+    storefrontId: Oxygen?.env?.PUBLIC_STOREFRONT_ID,
   },
   session: CookieSessionStorage('__session', {
     path: '/',

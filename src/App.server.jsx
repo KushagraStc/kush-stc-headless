@@ -15,6 +15,7 @@ import {
 } from '@shopify/hydrogen';
 import {HeaderFallback, EventsListener} from '~/components';
 import {NotFound} from '~/components/index.server';
+import Navbar from './components/custom/Navbar';
 
 function App({request}) {
   const pathname = new URL(request.normalizedUrl).pathname;
@@ -52,6 +53,7 @@ function App({request}) {
             <FileRoutes
               basePath={countryCode ? `/${countryCode}/` : undefined}
             />
+            {/* <Route path='/navbar'page={<Navbar/>}/> */}
             <Route path="*" page={<NotFound />} />
           </Router>
         </CartProvider>

@@ -5,8 +5,8 @@ export function ProductCards({products}) {
     <>
       {products.map((product) => (
         <ProductCard
-          product={product}
-          key={product.id}
+          product={product.node}
+          key={product.node.id}
           className={'snap-start w-80'}
         />
       ))}
