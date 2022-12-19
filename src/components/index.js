@@ -5,6 +5,9 @@ export * from './elements/index';
 export * from './global/index';
 export * from './product/index';
 export * from './sections/index';
+export * from './custom/index';
+// export * from './custom/index.server';
+
 export {CountrySelector} from './CountrySelector.client';
 export {CustomFont} from './CustomFont.client';
 export {HeaderFallback} from './HeaderFallback';

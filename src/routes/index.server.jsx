@@ -14,8 +14,9 @@ import { MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT } from '~/lib/fragments';
 import { getHeroPlaceholder } from '~/lib/placeholders';
 import { FeaturedCollections, Hero } from '~/components';
 import { Layout, ProductSwimlane } from '~/components/index.server';
-import Home from '../components/custom/Home';
-import Image2 from '../components/custom/Image';
+import Sliderdata from '../components/custom/Sliderdata';
+import Bannerrr from '../components/custom/Banner';
+
 
 export default function Homepage() {
   useServerAnalytics({
@@ -35,7 +36,6 @@ export default function Homepage() {
     </Layout>
   );
 }
-let collection_name;
 function HomepageContent() {
   const {
     language: { isoCode: languageCode },
@@ -51,31 +51,13 @@ function HomepageContent() {
     preload: true,
   });
 
-  const collection_handle = useShopQuery({
-    query: COLLECTION_NAME,
-    cache: CacheLong(),
-    preload: true,
-  });
-  collection_name = collection_handle.data.shop.metafield.value
-  console.log(collection_name, "COLLECTION_NAME")
-  // console.log(test, "res")
-  const test = useShopQuery({
-    query: Testquery,
-    variables: {
-      collection_name
-    },
-    cache: CacheLong(),
-    preload: true,
-  });
-  let res = test.data.collectionByHandle.products.edges
+
   const { heroBanners, featuredCollections, featuredProducts } = data;
 
   // fill in the hero banners with placeholders if they're missing
   const [primaryHero, secondaryHero, tertiaryHero] = getHeroPlaceholder(
     heroBanners.nodes,
   );
-
-  // console.log(featuredProducts.nodes[0].variants.nodes,'feature')
 
   return (
     // <>
@@ -84,7 +66,7 @@ function HomepageContent() {
     // </>
     <>
       {/* {primaryHero && (
-        // <Hero {...primaryHero} height="full" top loading="eager" />
+        <Hero {...primaryHero} height="full" top loading="eager" />
       )} */}
 
       {/**/}
@@ -94,39 +76,28 @@ function HomepageContent() {
           return  <Text>{x.node.title}</Text>
         })
       } */}
-      <Image2 data={res} title={collection_name} />
 
 
-      {/* 
-      {res.forEach((x) => {
-        <p>{x.node.title}</p>
-      })} */}
-      <ProductSwimlane
-        data={featuredProducts.nodes}
-        title="Headless"
-        divider="bottom"
-      />
-      <ProductSwimlane
-        data={featuredProducts.nodes}
-        title="Featured"
-        divider="bottom"
-      />
-      <ProductSwimlane
-        data={featuredProducts.nodes}
-        title="Maxi Dresses"
-        divider="bottom"
-      />
-      <ProductSwimlane
-        data={featuredProducts.nodes}
-        title="Cotton Dresses"
-        divider="bottom"
-      />
-      <ProductSwimlane
-        data={featuredProducts.nodes}
-        title="Loungewear"
-        divider="bottom"
-      />
-      <ProductSwimlane
+
+      <Bannerrr />
+      <Sliderdata namespace={"hydrogen"} key2={"featured-collection-1"} />
+      <Sliderdata namespace={"hydrogen1"} key2={"feature-collection-2-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-3-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-4-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-6-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-5-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-7-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-8-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-9-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-10-homepage"} />
+      <Sliderdata namespace={"hydrogen"} key2={"feature-collection-11-homepage"} />
+      {/* <Image2 data={res} title={collection_name} /> */}
+
+
+
+
+
+      {/* <ProductSwimlane
         data={featuredProducts.nodes}
         title="Winterwear"
         divider="bottom"
@@ -135,10 +106,10 @@ function HomepageContent() {
         data={featuredProducts.nodes}
         title="Print Sizes"
         divider="bottom"
-      />
+      /> */}
       {/* {secondaryHero && <Hero {...secondaryHero} />} */}
       {/* <FeaturedCollections
-        data={featuredCollections.nodes}
+        data={res.nodes}
         title="Collections"
       /> */}
 
@@ -254,58 +225,5 @@ const HOMEPAGE_SEO_QUERY = gql`
   }
 `;
 
-const COLLECTION_NAME = gql`
-query shopInfo{
-  shop {
-    metafield(key: "featured-collection-1", namespace: "hydrogen") {
-      namespace
-      key
-      id
-      value
-    }
-  }
-}
-`
 
 
-const Testquery = gql`
-query shopInfo{
-    collectionByHandle(handle:  "random-picks") {
-      products(first: 10) {
-      edges {
-        node {
-          title
-          id
-          handle
-          publishedAt
-          variants(first: 10) {
-            nodes {
-              id
-              priceV2 {
-                amount
-                currencyCode
-              }
-              compareAtPriceV2 {
-                amount
-                currencyCode
-              }
-              image {
-                altText
-                height
-                url
-                width
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  }
-
-`
-
-
-
-// console.log(Testquery, "test")

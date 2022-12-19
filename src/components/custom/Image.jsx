@@ -15,27 +15,19 @@ import { Section } from "../index"
 import { ProductCards } from "../sections/ProductCards"
 
 const Image2 = ({ data, title }) => {
-
-    // console.log(data,"data")
-return(
-
-    <>
-        <Section
-         heading={title} 
-         padding="y" >
-      <div className="swimlane hiddenScroll md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12">
-        {/* {productCardsMarkup} */}
-    <ProductCards products={data} />
-      </div>
-    </Section>
-
-
-
-
-
-    </>
-    // <ProductCard />
-)
+// console.log(data, "data")
+    return (
+        <>
+        
+            <Section
+                heading={title}
+                padding="y" >
+                <div className="swimlane hiddenScroll md:pb-8 md:scroll-px-8 lg:scroll-px-12 md:px-8 lg:px-12">
+                    <ProductCards products={data} />
+                </div>
+            </Section>
+        </>
+    )
 
 }
 export default Image2

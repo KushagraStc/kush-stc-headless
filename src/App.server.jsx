@@ -53,7 +53,7 @@ function App({request}) {
             <FileRoutes
               basePath={countryCode ? `/${countryCode}/` : undefined}
             />
-            {/* <Route path='/navbar'page={<Navbar/>}/> */}
+            <Route path='/navbar'page={<Navbar/>}/>
             <Route path="*" page={<NotFound />} />
           </Router>
         </CartProvider>
